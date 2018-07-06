@@ -1,0 +1,76 @@
+﻿@model IEnumerable<string>
+
+@{
+
+    AjaxOptions ajaxOpts = new AjaxOptions
+    {
+        
+        UpdateTargetId= "ProductList",
+        HttpMethod = "POST"
+
+    };
+}
+
+
+@using (Ajax.BeginForm("SearchBox", "Product", ajaxOpts))
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-8 col-xs-offset-2">
+                <div class="input-group">
+                    <div class="input-group-btn search-panel ">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" name="category">
+                            <span id="search_concept">All</span> <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li role="presentation" class="active"><a role="menuitem" tabindex="-1" href="#" name="All">All</a></li>
+                            @foreach (var category in Model)
+                            {
+                                <li role="presentation"><a role="menuitem" tabindex="-1" name="@Html.Raw(category)" >@Html.Raw(category)</a></li>
+
+                            }
+                        </ul>
+                    </div>
+                    <input type="hidden" name="category" value="All" id="search_param">
+                    <input type="text" class="form-control" name="searchText" placeholder="Search..." id="searchText">
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn btn-default">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+
+    $(document).ready(function (e) {
+        $('.search-panel .dropdown-menu').find('a').click(function (e) {
+            e.preventDefault();
+            //alert($('input[name="category"]').val());
+            var param = $(this).attr("name");
+            var concept = $(this).text();
+            $('.search-panel span#search_concept').text(concept);
+            $('input[name="category"]').val(param);
+            //$('.input-group #category').val(param);
+
+            $(this).parents('.dropdown-menu').find('li').removeClass('active');
+            $(this).parent('li').addClass('active');
+           //alert($('input[name="category"]').val());
+        });
+    });
+
+
+    //function getddlValue() {
+    //    alert('ddl');
+    //    return $('.dropdown-menu .active').text();
+    //}
+    //function getTextValue() {
+    //    alert('text');
+    //    return$('#SearchBox').val()
+    //}
+
+</script>
+
